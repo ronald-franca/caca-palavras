@@ -4,7 +4,7 @@ const WORDS = [
   {
     display: 'Variedades crioulas',
     normalized: 'VARIEDADESCRIOULAS',
-    description: 'Sementes mantidas por famílias agricultoras, adaptadas ao território e passadas entre gerações.'
+    description: 'Sementes cultivadas e selecionadas por gerações de agricultores e pela própria natureza.'
   },
   {
     display: 'Raças nativas',
@@ -14,7 +14,7 @@ const WORDS = [
   {
     display: 'Curraleiro pé-duro',
     normalized: 'CURRALEIROPEDURO',
-    description: 'Raça bovina resistente, associada ao sertão e à capacidade de enfrentar solos pedregosos.'
+    description: 'Raça bovina resistente, associada ao sertão piauiense. Seu nome se deve à sua capacidade de resistir aos solos pedregosos da região'
   },
   {
     display: 'Galinha canela preta',
@@ -29,17 +29,17 @@ const WORDS = [
   {
     display: 'Sementes da paixão',
     normalized: 'SEMENTESDAPAIXAO',
-    description: 'Sementes crioulas guardadas e selecionadas por agricultores para preservar a diversidade.'
+    description: 'Nome dado às sementes crioulas em diversas comunidades do semiárido brasileiro. Mostra o carinho destas comunidades para com suas sementes.'
   },
   {
     display: 'Feijão de corda',
     normalized: 'FEIJAODECORDA',
-    description: 'Leguminosa muito presente na alimentação regional e importante na agricultura familiar.'
+    description: 'Leguminosa muito apreciada na culinária nordestina e importante na agricultura familiar.'
   },
   {
     display: 'Milho vermelho',
     normalized: 'MILHOVERMELHO',
-    description: 'Variedade crioula de milho de coloração avermelhada, ligada à conservação da diversidade genética.'
+    description: 'Variedade crioula de milho com grãos de coloração avermelhada.'
   }
 ];
 
