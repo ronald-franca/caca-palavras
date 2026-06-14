@@ -1,7 +1,7 @@
 const board = document.getElementById('gameBoard');
 const gameTimerView = document.getElementById('gameTimerView');
 const attemptsElement = document.getElementById('attempts');
-const hintTextElement = document.getElementById('hintText');
+const wordsListDisplay = document.getElementById('wordsListDisplay');
 
 const startScreen = document.getElementById('startScreen');
 const preGameOverlay = document.getElementById('preGameOverlay');
@@ -18,7 +18,7 @@ const shareButton = document.getElementById('shareButton');
 const playerNameInput = document.getElementById('playerName');
 const musicButton = document.getElementById('musicButton');
 
-const flipSound = document.getElementById('flipSound'); // Usado aqui para o clique de seleção de letras
+const flipSound = document.getElementById('flipSound'); 
 const matchSound = document.getElementById('matchSound');
 const wrongSound = document.getElementById('wrongSound');
 const victorySound = document.getElementById('victorySound');
@@ -27,24 +27,22 @@ const bgMusic = document.getElementById('bgMusic');
 const shareCanvas = document.getElementById('shareCanvas');
 const shareCtx = shareCanvas.getContext('2d');
 
-// Definição das palavras e as dicas correspondentes
+// Definição das palavras com a descrição exata solicitada (Canela Preta corrigida para Galinha Caipira)
 const wordData = [
-  { word: "CANELAPRETA", hint: "Procure por: 'Canela Preta' (Variedade tradicional de arroz nativo)" },
-  { word: "CURRALEIROPEDURO", hint: "Procure por: 'Curraleiro Pé Duro' (Raça bovina histórica adaptada ao Semiárido)" },
-  { word: "FEIJAOFAVA", hint: "Procure por: 'Feijão Fava' (Leguminosa amplamente cultivada pela resiliência)" },
-  { word: "MORADANOVA", hint: "Procure por: 'Morada Nova' (Raça nativa de ovinos deslanados)" },
-  { word: "MILHO", hint: "Procure por: 'Milho' (Cereal básico conservado por gerações em variedades tradicionais)" },
-  { word: "SEMENTESDAPAIXAO", hint: "Procure por: 'Sementes da Paixão' (Nome dado às sementes crioulas guardadas por famílias)" },
-  { word: "RACASCRIOULAS", hint: "Procure por: 'Raças Crioulas' (Animais localmente adaptados e desenvolvidos ao longo do tempo)" },
-  { word: "VARIEDADESCRIOULAS", hint: "Procure por: 'Variedades Crioulas' (Cultivos agrícolas tradicionais livres de modificações industriais)" }
+  { word: "CANELAPRETA", displayName: "Canela Preta (Galinha Caipira do PI)" },
+  { word: "CURRALEIROPEDURO", displayName: "Curraleiro Pé Duro" },
+  { word: "FEIJAOFAVA", displayName: "Feijão Fava" },
+  { word: "MORADANOVA", displayName: "Morada Nova" },
+  { word: "MILHO", displayName: "Milho" },
+  { word: "SEMENTESDAPAIXAO", displayName: "Sementes da Paixão" },
+  { word: "RACASCRIOULAS", displayName: "Raças Crioulas" },
+  { word: "VARIEDADESCRIOULAS", displayName: "Variedades Crioulas" }
 ];
 
 const BOARD_SIZE = 15;
 let grid = [];
 let foundWords = [];
-let currentWordIndex = 0; // Controla qual palavra está sendo pedida na dica superior
 
-// Variáveis de controle de arrasto/seleção do mouse/touch
 let isSelecting = false;
 let selectedCells = [];
 
@@ -69,18 +67,16 @@ function playSound(audio) {
   } catch (e) {}
 }
 
-// Inicializa a matriz vazia
 function initGrid() {
   grid = Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(''));
 }
 
-// Insere as palavras na horizontal ou vertical de forma aleatória
 function placeWords() {
   wordData.forEach(item => {
     let placed = false;
     let attempts = 0;
     
-    while (!placed && attempts < 200) {
+    while (!placed && attempts < 300) {
       const isVertical = Math.random() < 0.5;
       const row = Math.floor(Math.random() * BOARD_SIZE);
       const col = Math.floor(Math.random() * BOARD_SIZE);
@@ -123,7 +119,6 @@ function placeWord(word, row, col, isVertical) {
   }
 }
 
-// Preenche o restante do tabuleiro com letras aleatórias
 function fillEmptySpaces() {
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   for (let r = 0; r < BOARD_SIZE; r++) {
@@ -135,7 +130,6 @@ function fillEmptySpaces() {
   }
 }
 
-// Renderiza a estrutura visual na Grid HTML
 function createBoard() {
   board.innerHTML = '';
   initGrid();
@@ -150,7 +144,6 @@ function createBoard() {
       cellElement.dataset.row = r;
       cellElement.dataset.col = c;
 
-      // Eventos integrados para mouse e telas sensíveis ao toque (Touch)
       cellElement.addEventListener('pointerdown', startSelection);
       cellElement.addEventListener('pointerenter', extendSelection);
       
@@ -158,20 +151,24 @@ function createBoard() {
     }
   }
   
-  // Finaliza a seleção ao soltar o clique fora ou dentro do tabuleiro
   window.addEventListener('pointerup', endSelection);
-  
-  updateHint();
+  renderWordsList();
 }
 
-function updateHint() {
-  if (currentWordIndex < wordData.length) {
-    hintTextElement.textContent = wordData[currentWordIndex].hint;
-    attemptsElement.textContent = `${foundWords.length} / ${wordData.length}`;
-  }
+// Renderiza a lista de palavras na parte superior indicando o status de cada uma
+function renderWordsList() {
+  wordsListDisplay.innerHTML = '';
+  wordData.forEach(item => {
+    const isFound = foundWords.includes(item.word);
+    const span = document.createElement('span');
+    span.classList.add('word-item-tag');
+    if (isFound) span.classList.add('found-tag');
+    span.textContent = item.displayName;
+    wordsListDisplay.appendChild(span);
+  });
+  attemptsElement.textContent = `${foundWords.length} / ${wordData.length}`;
 }
 
-// Lógica de Interação de seleção
 function startSelection(e) {
   isSelecting = true;
   selectedCells = [];
@@ -202,29 +199,25 @@ function endSelection() {
   if (!isSelecting) return;
   isSelecting = false;
 
-  // Junta as letras selecionadas para formar o termo buscado
   const selectedWord = selectedCells.map(cell => cell.textContent).join('');
-  const targetWord = wordData[currentWordIndex].word;
+  const reversedWord = selectedWord.split('').reverse().join('');
 
-  // Aceita a palavra escrita na ordem normal ou na ordem inversa (trás para frente)
-  const reversedTargetWord = targetWord.split('').reverse().join('');
+  // Busca se a palavra selecionada (ou invertida) existe no array completo de palavras
+  const matchedItem = wordData.find(item => item.word === selectedWord || item.word === reversedWord);
 
-  if (selectedWord === targetWord || selectedWord === reversedTargetWord) {
-    // Caso de acerto
+  if (matchedItem && !foundWords.includes(matchedItem.word)) {
+    // Palavra válida encontrada!
     playSound(matchSound);
     selectedCells.forEach(cell => {
       cell.classList.remove('selected');
       cell.classList.add('found');
     });
 
-    if (!foundWords.includes(targetWord)) {
-      foundWords.push(targetWord);
-      currentWordIndex++;
-      updateHint();
-      checkVictory();
-    }
+    foundWords.push(matchedItem.word);
+    renderWordsList();
+    checkVictory();
   } else {
-    // Caso de erro
+    // Errou ou palavra já encontrada
     playSound(wrongSound);
     clearSelections();
   }
@@ -263,7 +256,6 @@ function startGameTimer() {
 }
 
 function getRank(timeValue) {
-  // Balanceamento baseado no tempo gasto para varrer o caça-palavras
   if (timeValue <= 90) {
     return {
       label: 'OURO',
@@ -308,8 +300,6 @@ function startPreGameCountdown() {
 
 function initGameplay() {
   foundWords = [];
-  currentWordIndex = 0;
-  
   createBoard();
   startGameTimer();
   victoryOverlay.classList.add('hidden');
@@ -319,7 +309,6 @@ function restartGame() {
   location.reload();
 }
 
-// Lógica de Compartilhamento adaptada para o tempo do Caça-Palavras
 async function createShareImage() {
   const rank = getRank(gameSeconds);
 
@@ -354,7 +343,7 @@ async function createShareImage() {
 
   ctx.font = 'bold 54px Arial';
   ctx.fillText(formatTime(gameSeconds), 310, 856);
-  ctx.fillText("08/08", 770, 856); // Exibe fixo o total de acertos necessários
+  ctx.fillText("08/08", 770, 856);
 
   ctx.font = 'bold 44px Arial';
   ctx.fillText(rank.label, 540, 1100);
@@ -377,7 +366,7 @@ async function createShareImage() {
 async function shareToStories() {
   try {
     await createShareImage();
-    canvas.toBlob(async (blob) => {
+    shareCanvas.toBlob(async (blob) => {
       const file = new File([blob], 'conquista-caca-palavras.png', { type: 'image/png' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
@@ -398,7 +387,6 @@ async function shareToStories() {
   }
 }
 
-// Event Listeners baseados no jogo anterior
 startButton.addEventListener('click', () => {
   bgMusic.volume = 0.25;
   bgMusic.play().catch(() => {});
