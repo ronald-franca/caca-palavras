@@ -167,3 +167,329 @@
 
     .cell.found {
         background-color: var(--success);
+        color: white;
+        animation: matchPop .45s ease;
+    }
+
+    .overlay{
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,0.62);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        z-index:1000;
+        padding:20px;
+    }
+
+    .overlay-content{
+        background:var(--panel);
+        padding:34px 28px;
+        border-radius:22px;
+        text-align:center;
+        width:100%;
+        max-width:430px;
+        box-shadow:0 14px 40px rgba(0,0,0,0.22);
+    }
+
+    .overlay-content h1{
+        margin-bottom:12px;
+        font-size:32px;
+        color:var(--text);
+    }
+
+    .overlay-content p{
+        margin-bottom:18px;
+        color:#666;
+        line-height:1.5;
+    }
+
+    .overlay-content button,
+    .music-button,
+    .share-button{
+        border:none;
+        cursor:pointer;
+        border-radius:12px;
+        font-size:16px;
+        transition:transform .15s ease, opacity .15s ease, background .2s ease;
+    }
+
+    .overlay-content button:hover,
+    .music-button:hover,
+    .share-button:hover{
+        transform:translateY(-1px);
+    }
+
+    .overlay-content button{
+        background:var(--accent);
+        color:white;
+        padding:14px 24px;
+    }
+
+    .hidden{
+        display:none !important;
+    }
+
+    #preGameOverlay{
+        z-index:2100;
+        background:rgba(0,0,0,0.58);
+    }
+
+    #preGameNumber{
+        font-size:clamp(84px, 16vw, 132px);
+        font-weight:800;
+        color:#fff;
+        line-height:1;
+        animation:pulseCount 1s ease-in-out infinite;
+        text-shadow:0 8px 22px rgba(0,0,0,.25);
+    }
+
+    @keyframes pulseCount{
+        0%{ transform:scale(.75); opacity:.55; }
+        50%{ transform:scale(1.08); opacity:1; }
+        100%{ transform:scale(1); opacity:.85; }
+    }
+
+    @keyframes logoPulse{
+        0%{ transform:scale(1); opacity:1; }
+        50%{ transform:scale(1.05); opacity:.9; }
+        100%{ transform:scale(1); opacity:1; }
+    }
+
+    .start-overlay{
+        background:#ffffff;
+        z-index:2000;
+    }
+
+    .music-button{
+        position:fixed;
+        top:18px;
+        right:18px;
+        background:var(--accent);
+        color:white;
+        padding:12px 18px;
+        box-shadow:0 4px 12px rgba(0,0,0,0.14);
+        z-index:1100;
+    }
+
+    .victory-stats{
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+        margin:18px 0 14px;
+    }
+
+    .stat-card{
+        background:#faf7ee;
+        border:1px solid rgba(0,0,0,.05);
+        border-radius:16px;
+        padding:14px 12px;
+        text-align:center;
+    }
+
+    .stat-label{
+        display:block;
+        font-size:13px;
+        color:#777;
+        margin-bottom:6px;
+    }
+
+    .stat-value{
+        font-size:24px;
+        font-weight:700;
+        color:var(--accent);
+        line-height:1.1;
+    }
+
+    .rank-box{
+        background:#fff9e8;
+        border:1px solid rgba(0,0,0,.06);
+        border-radius:18px;
+        padding:16px 14px;
+        margin:14px 0 10px;
+        position:relative;
+    }
+
+    .rank-title{
+        font-size:13px;
+        color:#777;
+        margin-bottom:8px;
+    }
+
+    .rank-badge{
+        display:inline-block;
+        padding:8px 14px;
+        border-radius:999px;
+        color:white;
+        font-weight:700;
+        letter-spacing:.4px;
+        margin-bottom:8px;
+    }
+
+    .rank-badge.gold{ background:var(--gold); }
+    .rank-badge.silver{ background:var(--silver); }
+    .rank-badge.bronze{ background:var(--bronze); }
+
+    .rank-message{
+        font-size:14px;
+        color:#555;
+        line-height:1.4;
+    }
+
+    .victory-actions{
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+        justify-content:center;
+        margin-top:12px;
+    }
+
+    .share-button{
+        background:#1f7a4c;
+        color:white;
+        padding:14px 18px;
+    }
+
+    .restart-button{
+        background:var(--accent);
+        color:white;
+        padding:14px 18px;
+        border:none;
+        cursor:pointer;
+        border-radius:12px;
+        font-size:16px;
+    }
+
+    .player-name-input{
+        width:100%;
+        padding:12px 14px;
+        margin:8px 0 14px;
+        border:1px solid #d8d2c3;
+        border-radius:12px;
+        font-size:16px;
+        text-align:center;
+        outline:none;
+        background:#fff;
+        color:var(--text);
+    }
+
+    .player-name-input:focus{
+        border-color:var(--accent);
+        box-shadow:0 0 0 3px rgba(106,127,31,.12);
+    }
+
+    canvas#shareCanvas{
+        display:none;
+    }
+
+    @keyframes matchPop{
+        0%{ transform: scale(1); }
+        50%{ transform: scale(1.1); }
+        100%{ transform: scale(1); }
+    }
+
+    @media(max-width:800px){
+        body{ padding:6px; }
+        .logo{ width:100px; }
+        .top-info{ gap:6px; margin-bottom:6px; }
+        .info-box{ min-width:105px; padding:6px 8px; }
+        .info-title{ font-size:11px; margin-bottom:2px; }
+        .info-value{ font-size:20px; }
+        .hint-container { margin-bottom: 8px; padding: 8px; }
+        .words-list-display { font-size:11px; gap: 4px; }
+        .word-item-tag { padding: 2px 6px; }
+        .music-button{ top:8px; right:8px; padding:8px 10px; font-size:12px; }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="overlay start-overlay" id="startScreen">
+    <div class="overlay-content">
+        <img src="assets/logo.png" class="logo" alt="Logo do projeto" style="width:160px; margin-bottom:18px;">
+        <h1>Caça-Palavras</h1>
+        <p>Encontre os termos tradicionais crioulos 🌱🐔</p>
+        <button id="startButton">Jogar</button>
+    </div>
+</div>
+
+<div class="overlay hidden" id="preGameOverlay">
+    <div id="preGameNumber">3</div>
+</div>
+
+<header>
+    <img src="assets/logo.png" class="logo" alt="Logo do projeto">
+</header>
+
+<button id="musicButton" class="music-button">🔊 Música</button>
+
+<div class="top-info">
+    <div class="info-box">
+        <div class="info-title">Tempo de Jogo</div>
+        <div class="info-value" id="gameTimerView">00:00</div>
+    </div>
+
+    <div class="info-box">
+        <div class="info-title">Palavras Encontradas</div>
+        <div class="info-value" id="attempts">0 / 8</div>
+    </div>
+</div>
+
+<div class="hint-container">
+    <div class="hint-title">Termos da Biodiversidade Crioula</div>
+    <div class="words-list-display" id="wordsListDisplay">Aguardando início...</div>
+</div>
+
+<div class="game-board" id="gameBoard"></div>
+
+<div class="overlay hidden" id="victoryOverlay">
+    <div class="overlay-content">
+        <h1>Parabéns 🎉</h1>
+        <p>Você mapeou e salvou as Raízes da Biodiversidade tradicional!</p>
+
+        <input
+            type="text"
+            id="playerName"
+            class="player-name-input"
+            placeholder="Digite seu nome para o ranking"
+            maxlength="20"
+            autocomplete="name"
+        >
+
+        <div class="rank-box">
+            <div class="rank-title">Ranking da partida</div>
+            <div id="rankBadge" class="rank-badge gold">—</div>
+            <div id="rankMessage" class="rank-message"></div>
+        </div>
+
+        <div class="victory-stats">
+            <div class="stat-card">
+                <span class="stat-label">Tempo Total</span>
+                <div class="stat-value" id="finalTime">00:00</div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-label">Palavras</span>
+                <div class="stat-value" id="finalAttempts">8 / 8</div>
+            </div>
+        </div>
+
+        <div class="victory-actions">
+            <button id="shareButton" class="share-button">Compartilhe essa conquista!</button>
+            <button onclick="restartGame()" class="restart-button">Reiniciar jogo</button>
+        </div>
+    </div>
+</div>
+
+<canvas id="shareCanvas" width="1080" height="1920"></canvas>
+
+<audio id="flipSound" src="sounds/flip.mp3" preload="auto"></audio>
+<audio id="matchSound" src="sounds/match.mp3" preload="auto"></audio>
+<audio id="wrongSound" src="sounds/wrong.mp3" preload="auto"></audio>
+<audio id="victorySound" src="sounds/victory.mp3" preload="auto"></audio>
+<audio id="bgMusic" src="sounds/music.mp3" preload="auto" loop></audio>
+
+<script src="script.js"></script>
+</body>
+</html>
