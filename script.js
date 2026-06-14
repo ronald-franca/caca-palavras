@@ -27,7 +27,7 @@ const bgMusic = document.getElementById('bgMusic');
 const shareCanvas = document.getElementById('shareCanvas');
 const shareCtx = shareCanvas.getContext('2d');
 
-// Definição das palavras com a descrição exata solicitada (Canela Preta corrigida para Galinha Caipira)
+// Definição das palavras corrigidas e prontas para validação livre
 const wordData = [
   { word: "CANELAPRETA", displayName: "Canela Preta (Galinha Caipira do PI)" },
   { word: "CURRALEIROPEDURO", displayName: "Curraleiro Pé Duro" },
@@ -61,7 +61,7 @@ function playSound(audio) {
   try {
     audio.currentTime = 0;
     const promise = audio.play();
-    if (promise && typeof promise.catch === 'function') {
+    if (promise !== undefined) {
       promise.catch(() => {});
     }
   } catch (e) {}
@@ -151,11 +151,9 @@ function createBoard() {
     }
   }
   
-  window.addEventListener('pointerup', endSelection);
   renderWordsList();
 }
 
-// Renderiza a lista de palavras na parte superior indicando o status de cada uma
 function renderWordsList() {
   wordsListDisplay.innerHTML = '';
   wordData.forEach(item => {
@@ -202,11 +200,9 @@ function endSelection() {
   const selectedWord = selectedCells.map(cell => cell.textContent).join('');
   const reversedWord = selectedWord.split('').reverse().join('');
 
-  // Busca se a palavra selecionada (ou invertida) existe no array completo de palavras
   const matchedItem = wordData.find(item => item.word === selectedWord || item.word === reversedWord);
 
   if (matchedItem && !foundWords.includes(matchedItem.word)) {
-    // Palavra válida encontrada!
     playSound(matchSound);
     selectedCells.forEach(cell => {
       cell.classList.remove('selected');
@@ -217,7 +213,6 @@ function endSelection() {
     renderWordsList();
     checkVictory();
   } else {
-    // Errou ou palavra já encontrada
     playSound(wrongSound);
     clearSelections();
   }
@@ -386,6 +381,9 @@ async function shareToStories() {
     alert('Erro ao gerar imagem de compartilhamento.');
   }
 }
+
+// Vinculação final dos eventos globais de clique/toque
+window.addEventListener('pointerup', endSelection);
 
 startButton.addEventListener('click', () => {
   bgMusic.volume = 0.25;
