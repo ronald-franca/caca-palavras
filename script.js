@@ -27,7 +27,6 @@ const bgMusic = document.getElementById('bgMusic');
 const shareCanvas = document.getElementById('shareCanvas');
 const shareCtx = shareCanvas.getContext('2d');
 
-// Definição das palavras corrigidas e prontas para validação livre
 const wordData = [
   { word: "CANELAPRETA", displayName: "Canela Preta (Galinha Caipira do PI)" },
   { word: "CURRALEIROPEDURO", displayName: "Curraleiro Pé Duro" },
@@ -306,26 +305,12 @@ function restartGame() {
 
 async function createShareImage() {
   const rank = getRank(gameSeconds);
-
-  const templateMap = {
-    gold: 'assets/3.png',
-    silver: 'assets/4.png',
-    bronze: 'assets/5.png'
-  };
-
-  const templateSrc = templateMap[rank.className] || templateMap.gold;
   const canvas = shareCanvas;
   const ctx = shareCtx;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  const template = await new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.src = templateSrc;
-  });
-  
-  ctx.drawImage(template, 0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#f5f2e8';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   const playerName = (playerNameInput?.value || '').trim() || 'Jogador';
 
@@ -367,7 +352,7 @@ async function shareToStories() {
         await navigator.share({
           files: [file],
           title: 'Caça-Palavras',
-          text: 'Olha o meu resultado no Caça-Palavras das Raízes da Biodiversidade Crioula!'
+          text: 'Olha o meu resultado no Caça-Palavras!'
         });
       } else {
         const url = URL.createObjectURL(blob);
@@ -382,7 +367,6 @@ async function shareToStories() {
   }
 }
 
-// Vinculação final dos eventos globais de clique/toque
 window.addEventListener('pointerup', endSelection);
 
 startButton.addEventListener('click', () => {
